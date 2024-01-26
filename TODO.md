@@ -1,5 +1,4 @@
 # refector
-- use tags and single forwarding rules
 
 # access
 - inject ssh keys

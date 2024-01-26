@@ -39,3 +39,19 @@ variable "vpc-service-boot-disk-size" {
   type = string
   description = "vpc-service boot disk size"
 }
+
+# NETWORKING
+variable "vpc-network-name" {
+  type = string
+  description = "vpc-service network name"
+}
+
+variable "vpc-subnet-name" {
+  type = string
+  description = "vpc subnet name"
+}
+
+variable "vpc-subnet-cidr-range" {
+  type = string
+  description = "vpc subnet cidr"
+}

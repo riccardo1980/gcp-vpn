@@ -21,7 +21,8 @@ resource "google_compute_instance" "vpc_service" {
   machine_type = var.vpc-service-machine-type
   zone = var.zone
 
-  tags = ["vpc-server"]
+  tags = ["allow-http", "allow-https", "allow-ssh"]
+
   boot_disk {
     initialize_params {
       image = var.vpc-service-boot-disk-image
@@ -42,27 +43,48 @@ resource "google_compute_instance" "vpc_service" {
 }
 
 # NETWORK
-
 resource "google_compute_network" "vpc_network" {
-  name = "vpc-network"
+  name = var.vpc-network-name
   routing_mode = "REGIONAL"
   auto_create_subnetworks = false
 }
 
-
 resource "google_compute_subnetwork" "vpc_subnetwork" {
-  name = "vpc-subnetwork"
-  ip_cidr_range = "10.124.0.0/20"
+  name = var.vpc-subnet-name
+  ip_cidr_range = var.vpc-subnet-cidr-range
   network = google_compute_network.vpc_network.name
   region = var.region
 }
 
-resource "google_compute_firewall" "vpc_firewall" {
-  name = "vpc-firewall"
+resource "google_compute_firewall" "allow_http" {
+  name = "allow-http"
   network = google_compute_network.vpc_network.name
+  target_tags = ["allow-http"]
   source_ranges = ["0.0.0.0/0"]
   allow {
     protocol = "tcp"
-    ports = ["22", "80", "443"]
+    ports = ["80"]
+  }
+}
+
+resource "google_compute_firewall" "allow_https" {
+  name = "allow-https"
+  network = google_compute_network.vpc_network.name
+  target_tags = ["allow-https"]
+  source_ranges = ["0.0.0.0/0"]
+  allow {
+    protocol = "tcp"
+    ports = ["443"]
+  }
+}
+
+resource "google_compute_firewall" "allow_ssh" {
+  name = "allow-ssh"
+  network = google_compute_network.vpc_network.name
+  target_tags = ["allow-ssh"]
+  source_ranges = ["0.0.0.0/0"]
+  allow {
+    protocol = "tcp"
+    ports = ["22"]
   }
 }
