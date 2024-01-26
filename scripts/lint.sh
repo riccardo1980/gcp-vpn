@@ -2,6 +2,9 @@
 
 set -e
 
+# formatting
 terraform fmt
+
+# validation
 tflint
 terraform validate
