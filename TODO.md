@@ -1,8 +1,3 @@
-# refector
-
-# access
-- inject ssh keys using terraform
-
 # software install
 - https://developer.hashicorp.com/terraform/tutorials/provision/cloud-init
 - https://blog.entek.org.uk/notes/2021/09/29/terraform-cloud-init-and-ansible.html
@@ -28,3 +23,10 @@ ip a
 openvpn --remote <SERVER_PUBLIC_IP> -dev tun1 --ifconfig 10.9.8.2 10.9.8.1
 # in another terminal, try to reach the server
 ping 10.9.8.2
+
+---------------
+# fixme
+- still duplicated values for resources
+  - project: terraform.tfvars, PROJECT_ID: scripts/00-config.sh
+  - region: terraform.tfvars, REGION: scripts/00-config.sh
+  - bucket: backend.tf, STATE_BUCKET: 00-config.sh

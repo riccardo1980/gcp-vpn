@@ -13,11 +13,22 @@ variable "zone" {
   description = "deployment GCP zone"
 }
 
-variable "credentials_file" {
+variable "terraform_SA_credentials_file" {
   type        = string
-  sensitive   = true
   description = "terraform Service Account GCP credentials file"
 }
+
+variable "terraform_ssh_public_key_file" {
+  type        = string
+  description = "terraform ssh public key file"
+}
+
+
+variable "terraform_ssh_private_key_file" {
+  type        = string
+  description = "terraform ssh private key file"
+}
+
 
 # COMPUTE
 variable "vpc-service-name" {

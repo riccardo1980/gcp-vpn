@@ -23,3 +23,7 @@ gcloud iam service-accounts keys create ./secrets/terraform-service-account.json
 # STORAGE BUCKET
 echo "Creating storage bucket..."
 gsutil mb -l europe-west1 gs://${STATE_BUCKET}
+
+# SSH KEYS
+echo "Creating terraform keys..."
+ssh-keygen -t rsa -b 4096 -f secrets/terraform.pem -N ''

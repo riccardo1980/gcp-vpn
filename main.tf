@@ -3,13 +3,13 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.0.0"
+      version = "5.13.0"
     }
   }
 }
 
 provider "google" {
-  credentials = file(var.credentials_file)
+  credentials = file(var.terraform_SA_credentials_file)
   project     = var.project
   region      = var.region
   zone        = var.zone
@@ -22,6 +22,10 @@ resource "google_compute_instance" "vpc_service" {
   zone         = var.zone
 
   tags = ["allow-http", "allow-https", "allow-ssh"]
+
+  metadata = {
+    ssh-keys = "terraform:${file(var.terraform_ssh_public_key_file)}"
+  }
 
   boot_disk {
     initialize_params {
@@ -40,6 +44,20 @@ resource "google_compute_instance" "vpc_service" {
       // Ephemeral public IP
     }
   }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "terraform"
+      host        = self.network_interface[0].access_config[0].nat_ip
+      private_key = file(var.terraform_ssh_private_key_file)
+    }
+
+    inline = [
+      "touch iwashere.txt"
+    ]
+  }
+
 }
 
 # NETWORK
@@ -86,5 +104,17 @@ resource "google_compute_firewall" "allow_ssh" {
   allow {
     protocol = "tcp"
     ports    = ["22"]
+  }
+}
+
+
+resource "google_compute_firewall" "deny_all_ingress" {
+  name          = "deny-all-ingress"
+  network       = google_compute_network.vpc_network.name
+  direction     = "INGRESS"
+  priority      = 65534
+  source_ranges = ["0.0.0.0/0"]
+  deny {
+    protocol = "all"
   }
 }
