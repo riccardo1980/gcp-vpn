@@ -33,4 +33,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+# custom
 /secrets
+plan.json
+.vscode
