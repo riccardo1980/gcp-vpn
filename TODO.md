@@ -1,7 +1,7 @@
 # refector
 
 # access
-- inject ssh keys
+- inject ssh keys using terraform
 
 # software install
 - https://developer.hashicorp.com/terraform/tutorials/provision/cloud-init
