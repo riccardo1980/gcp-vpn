@@ -21,7 +21,7 @@ resource "google_compute_instance" "vpc_service" {
   machine_type = var.vpc-service-machine-type
   zone         = var.zone
 
-  tags = ["allow-http", "allow-https", "allow-ssh"]
+  tags = ["allow-http", "allow-https", "allow-ssh", "allow-openvpn", "deny-all-ingress"]
 
   metadata = {
     ssh-keys = "terraform:${file(var.terraform_ssh_public_key_file)}"
@@ -45,6 +45,17 @@ resource "google_compute_instance" "vpc_service" {
     }
   }
 
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "terraform"
+      host        = self.network_interface[0].access_config[0].nat_ip
+      private_key = file(var.terraform_ssh_private_key_file)
+    }
+    source      = "installer.sh"
+    destination = "installer.sh"
+  }
+
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -54,7 +65,9 @@ resource "google_compute_instance" "vpc_service" {
     }
 
     inline = [
-      "touch iwashere.txt"
+      "touch iwashere.txt",
+      "chmod u+x installer.sh",
+      "sudo ./installer.sh"
     ]
   }
 
@@ -93,6 +106,17 @@ resource "google_compute_firewall" "allow_https" {
   allow {
     protocol = "tcp"
     ports    = ["443"]
+  }
+}
+
+resource "google_compute_firewall" "allow_openvpn" {
+  name          = "allow-openvpn"
+  network       = google_compute_network.vpc_network.name
+  target_tags   = ["allow-openvpn"]
+  source_ranges = ["0.0.0.0/0"]
+  allow {
+    protocol = "udp"
+    ports    = ["1194"]
   }
 }
 
