@@ -78,10 +78,18 @@ openvpn --remote <SERVER_PUBLIC_IP> --dev tun1 --ifconfig 10.9.8.2 10.9.8.1 --se
 
 # References
 ## software install
-- https://developer.hashicorp.com/terraform/tutorials/provision/cloud-init
-- https://blog.entek.org.uk/notes/2021/09/29/terraform-cloud-init-and-ansible.html
-- https://wiki.debian.org/OpenVPN#Installation
-- https://dteslya.engineer/blog/2019/02/25/how-to-automate-openvpn-server-deployment-and-user-management/
+- cloud-init
+  - https://developer.hashicorp.com/terraform/tutorials/provision/cloud-init
+  - https://blog.entek.org.uk/notes/2021/09/29/terraform-cloud-init-and-ansible.html
+- openvpn
+  - https://wiki.debian.org/OpenVPN#Installation
+  - https://dteslya.engineer/blog/2019/02/25/how-to-automate-openvpn-server-deployment-and-user-management/
+- wireguard
+  - https://www.wireguard.com/install/
+  - https://www.wireguard.com/quickstart/
+  - android configuration video https://www.youtube.com/watch?v=gBnbqulTuqI
+  - 
+
 
 ## Similar projects
 - https://github.com/dumrauf/openvpn-terraform-install
