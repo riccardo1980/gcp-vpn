@@ -2,17 +2,7 @@
 
 ## High Priority
 
-### [OPENVPN][BUGFIX] use secret supported for both server and client side
-  - client side: openvpn version 2.6.3
-  - server side: openvpn [older than server]
-  - client side command
-    ```Bash
-    openvpn --remote <SERVER_PUBLIC_IP> --dev tun1 --ifconfig 10.9.8.2 10.9.8.1 --secret <CLIENT_KEY>
-    ```
-  - error message
-    ```
-    WARNING: INSECURE cipher (BF-CBC) with block size less than 128 bit (64 bit).  This allows attacks like SWEET32.  Mitigate by using a --cipher with a larger block size
-    ```
+### :white_check_mark: [OPENVPN][BUGFIX][bugfix/configuration] use secret supported for both server and client side (server version 2.5.1 - client version 2.6.3)
 
 ## Medium Priority
 

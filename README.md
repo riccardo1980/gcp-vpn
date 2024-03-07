@@ -57,10 +57,26 @@ traceroute 10.9.8.1
 
 ## Static key
 1. server side
+```Bash
+sudo openvpn --genkey secret /etc/openvpn/static.key --cipher AES-256-CBC
+
+cat > /etc/openvpn/server.conf <<EOF
+dev tun0
+ifconfig 10.9.8.1 10.9.8.2
+secret /etc/openvpn/static.key
+cipher AES-256-CBC
+EOF
+```
+Remember to export shared secret file `/etc/openvpn/static.key`
 
 2. client side
 ```Bash
-openvpn --remote <SERVER_PUBLIC_IP> --dev tun1 --ifconfig 10.9.8.2 10.9.8.1 --secret <CLIENT_KEY>
+  sudo openvpn \
+      --remote <SERVER_PUBLIC_IP> \
+      --dev tun1 \
+      --ifconfig 10.9.8.2 10.9.8.1 \
+      --secret static.key \
+      --cipher AES-256-CBC
 ```
 # Cloud providers
   - GCP
