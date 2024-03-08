@@ -17,7 +17,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --role="roles/editor"
 
 echo "Creating and downloading keys..."
-gcloud iam service-accounts keys create ./secrets/terraform-service-account.json \
+gcloud iam service-accounts keys create ${TERRAFORM_SA_CREDENTIALS_FILE} \
     --iam-account=${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com
 
 # STORAGE BUCKET
@@ -26,4 +26,4 @@ gsutil mb -l europe-west1 gs://${STATE_BUCKET}
 
 # SSH KEYS
 echo "Creating terraform keys..."
-ssh-keygen -t rsa -b 4096 -f secrets/terraform.pem -N ''
+ssh-keygen -t rsa -b 4096 -f ${TERRAFORM_SSH_PRIVATE_KEY_FILE} -N ''
