@@ -13,6 +13,7 @@ fi
 
 SECRET_KEYFILE="./secrets/static.key"
 OPENVPN_KEYFILE="/etc/openvpn/static.key"
+OPENVPN_CLIENT_CONFIG="/etc/openvpn/client.conf"
 
 cp ${SECRET_KEYFILE} ${OPENVPN_KEYFILE}
 
@@ -23,7 +24,7 @@ cp ${SECRET_KEYFILE} ${OPENVPN_KEYFILE}
 #   --secret ${SECRET_KEYFILE} \
 #   --cipher AES-256-CBC
 
-cat > /etc/openvpn/client.conf <<EOF
+cat > ${OPENVPN_CLIENT_CONFIG} <<EOF
 dev tun1
 proto udp
 remote ${SERVER_IP}
